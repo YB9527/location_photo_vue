@@ -1,15 +1,41 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
+import Admin from '@/components/admin/Admin'
+import UserManager from '@/components/admin/UserManager'
+import MapDatabaseManager from '@/components/admin/MapDatabaseManager'
+import MapServerManager from '@/components/admin/MapServerManager'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
-    }
+      path: '/admin',
+      name: 'Admin',
+      component: Admin,
+      children: [
+        {
+          path: 'usermanager',
+          name: 'UserManager',
+          component: UserManager,
+        },
+        {
+          path: 'mapdatabasemanager',
+          name: 'MapDatabaseManager',
+          component: MapDatabaseManager,
+        },
+        {
+          path: 'mapservermanager',
+          name: 'MapServerManager',
+          component: MapServerManager,
+        },
+      ]
+    },
+    {
+      path: '*',
+      name: 'Admin',
+      component: Admin
+    },
   ]
 })
