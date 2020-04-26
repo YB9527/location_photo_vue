@@ -22,6 +22,7 @@ const store = new Vuex.Store({
     host: "http://127.0.0.1:3334/",
     user: null,
     height: 1260,
+    width:500,
     self: '',
     //是否登录后台
     isloginadmin: true,
@@ -33,6 +34,12 @@ const store = new Vuex.Store({
     isLoginAdmin(state) {
       return state.isloginadmin;
     },
+    getWindowHeight(state) {
+      return state.height;
+    },
+    getWindowWidth(state) {
+      return state.width;
+    },
   },
   mutations: {
     setSelf(state, self) {
@@ -40,6 +47,9 @@ const store = new Vuex.Store({
     },
     setHeight(state, height) {
       state.height = height;
+    },
+    setWidth(state, width) {
+      state.width = width;
     },
     setUser(state, user) {
       state.user = user;

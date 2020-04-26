@@ -10,11 +10,21 @@
     created() {
       this.$store.commit("setSelf", this);
     },
+    created() {
+      this.setHeight();
+    },
     watch: {
       $route(to, from) {
-        this.$store.commit("setHeight", window.innerHeight - 10);
-      }
+        this.setHeight();
+      },
     },
+    methods: {
+      setHeight() {
+        this.$store.commit("setHeight", window.innerHeight - 10);
+        this.$store.commit("setWidth", window.innerWidth - 10);
+      },
+
+    }
   }
 </script>
 

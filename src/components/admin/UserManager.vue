@@ -8,7 +8,7 @@
         :data="users"
         height="250"
         border
-        style="width: 89%">
+        style="width: 100%">
         <el-table-column
           type="index"
           label="序号"
@@ -40,7 +40,7 @@
         <el-table-column
           prop="userLevel"
           label="角色级别">
-          <template slot-scope="scope">{{ scope.row.userLevel | levelFormat(levels) }}</template>
+          <template slot-scope="scope">{{ scope.row.level | levelFormat(levels) }}</template>
         </el-table-column>
         <el-table-column
           prop="email"
@@ -141,9 +141,10 @@
     },
     filters: {
       levelFormat(userLevel, levels) {
+
         if (userLevel) {
           for (let level of levels) {
-            if (level.name === userLevel.level) {
+            if (level.name === userLevel) {
               return level.describe;
             }
           }
@@ -158,7 +159,6 @@
           if (resultdata.status === "Success") {
             if (resultdata.json != null) {
               let levels = JSON.parse(resultdata.json);
-              console.log(levels);
               this.levels = levels;
             }
           } else {
@@ -169,7 +169,6 @@
 
       this.$store.commit("getCustom", {
         url: admintool.getUserUrl() + "findusers", callback: (resultdata) => {
-          console.log(resultdata)
           if (resultdata.status === "Success") {
             if (resultdata.json != null) {
               let users = JSON.parse(resultdata.json);
@@ -187,7 +186,6 @@
       setUsersLevel(users) {
         if (users) {
           for (let user of users) {
-            console.log(user);
             this.setUserLevel(user);
           }
         }
@@ -200,7 +198,6 @@
         let userLevel = user.userLevel;
         if (userLevel) {
           user.level = userLevel.level;
-          console.log(userLevel);
         }
       },
       /**
@@ -219,17 +216,7 @@
       submitEditUser(user) {
 
 
-        if (user.level) {
-          //更改级别
-          console.log(user.level);
-          if (user.userLevel) {
-            user.userLevel.level = user.level;
-          } else {
-            user.userLevel = {"level": user.level};
-          }
-          this.agreeUserDialogFormVisible = false;
-          this.edituserDialogFormVisible = false;
-        } else {
+        if (!user.level) {
           this.$store.commit("showMessageBox", {type: "error", message: "请分配级别！！！"})
           return;
         }
