@@ -4,9 +4,10 @@
       用户管理界面
     </h3>
     <div>
+
       <el-table
         :data="users"
-        height="250"
+        :height="tableheight"
         border
         style="width: 100%">
         <el-table-column
@@ -57,7 +58,9 @@
         </el-table-column>
 
       </el-table>
-
+      <div id="bottom1" style="text-align: center;">
+        <Pageination :searchcustom="searchproject"></Pageination>
+      </div>
     </div>
     <div>
       <el-dialog title="编辑用户" :visible.sync="edituserDialogFormVisible" width="400px">
@@ -126,9 +129,10 @@
 
 <script>
   import admintool from '@/public/admin/admintool';
-
+  import Pageination from "../common/Pageination";
   export default {
     name: "UserManager",
+    components: { Pageination},
     data() {
       return {
         users: [],//表格要显示的user
@@ -137,6 +141,17 @@
         edituserDialogFormVisible: false,
         agreeUserDialogFormVisible: false,
         levels: [],
+        tableheight:0,//表格高度
+        searchproject: {
+          //搜索对象 栏 使用
+          projectname: "",//项目名称
+          projectid: "",//项目id
+          projectcantractid: "",//合同id
+
+          pageindex: 1,
+          limit: 20,
+          total: 0,
+        },
       }
     },
     filters: {
@@ -153,7 +168,23 @@
         }
       }
     },
+    watch: {
+      'searchproject.pageindex'(val, oldVal) {
+
+        this.searchByPo(this.searchproject)
+      },
+      'searchproject.limit'(val, oldVal) {
+
+        this.searchByPo(this.searchproject)
+      }
+    },
+    mounted(){
+      this.tableheight = 500;
+    },
     created() {
+      this.tableheight = this.$store.getters.getWindowHeight-100;
+      //this.tableheight = this.$store.getters.getWindowHeight-100;
+      //console.log(this.tableheight);
       this.$store.commit("getCustom", {
         url: admintool.getUserUrl() + "findlevels", callback: (resultdata) => {
           if (resultdata.status === "Success") {
@@ -182,7 +213,9 @@
       });
     },
     methods: {
+      searchByPo(po){
 
+      },
       setUsersLevel(users) {
         if (users) {
           for (let user of users) {
@@ -265,5 +298,17 @@
 </script>
 
 <style scoped>
-
+  #bottom {
+    position: fixed;
+    z-index: 0;
+    right: 0;
+    left: 0;
+    height: 40px;
+    padding-right: 10px;
+    padding-left: 10px;
+    border-bottom: 0;
+    background-color: #f7f7f7;
+    bottom: 0px;
+    box-shadow: 0 1px 6px #ccc;
+  }
 </style>

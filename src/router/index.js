@@ -6,13 +6,19 @@ import UserManager from '@/components/admin/UserManager'
 import MapDatabaseManager from '@/components/admin/MapDatabaseManager'
 import MapServerManager from '@/components/admin/MapServerManager'
 import AreaSelect from '@/components/admin/AreaSelect'
-
+import olmap from '@/components/test/olmap'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
+      path: '/',
+      name: 'olmap',
+      component: olmap,
+    },
+    {
+
       path: '/admin',
       name: 'Admin',
       component: Admin,

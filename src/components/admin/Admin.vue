@@ -37,12 +37,9 @@
               <span slot="title">服务管理</span>
             </el-menu-item>
           </el-submenu>
-
-
           <el-menu-item index="3" style="margin-top: 100px" @click="closeOrOpenMenu()">
             <i :class="colseoropenmenu"></i>
           </el-menu-item>
-
         </el-menu>
 
       </div>

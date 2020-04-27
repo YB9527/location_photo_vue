@@ -5,8 +5,12 @@
 </template>
 
 <script>
+  import olmap from './components/test/olmap.vue'
   export default {
     name: 'App',
+    components: {
+      olmap
+    },
     created() {
       this.$store.commit("setSelf", this);
     },
@@ -29,6 +33,7 @@
 </script>
 
 <style>
+
   #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
