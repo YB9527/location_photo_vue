@@ -30,11 +30,15 @@
             </template>
             <el-menu-item @click="toPath('/admin/mapdatabasemanager')">
               <i class="el-icon-coin"></i>
-              <span slot="title">数据管理</span>
+              <span slot="title">shp数据管理</span>
             </el-menu-item>
             <el-menu-item @click="toPath('/admin/mapservermanager')">
               <i class="el-icon-wind-power"></i>
               <span slot="title">服务管理</span>
+            </el-menu-item>
+            <el-menu-item @click="toPath('/admin/xzqymanager')">
+              <i class="el-icon-ship"></i>
+              <span slot="title">行政区域管理</span>
             </el-menu-item>
           </el-submenu>
           <el-menu-item index="3" style="margin-top: 100px" @click="closeOrOpenMenu()">

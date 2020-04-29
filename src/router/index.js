@@ -6,6 +6,8 @@ import UserManager from '@/components/admin/UserManager'
 import MapDatabaseManager from '@/components/admin/MapDatabaseManager'
 import MapServerManager from '@/components/admin/MapServerManager'
 import AreaSelect from '@/components/admin/AreaSelect'
+import XZQYManager from '@/components/admin/XZQYManager'
+
 import olmap from '@/components/test/olmap'
 
 Vue.use(Router)
@@ -42,6 +44,11 @@ export default new Router({
           path: 'areaselect',
           name: 'AreaSelect',
           component: AreaSelect,
+        },
+        {
+          path: 'xzqymanager',
+          name: 'XZQYManager',
+          component: XZQYManager,
         },
       ]
     },

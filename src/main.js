@@ -18,8 +18,8 @@ import Vuex from 'vuex'
 Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {
-    //host: "http://120.79.177.94:3333/",
-    host: "http://127.0.0.1:3334/",
+    host: "http://prsmartoa.com:3334/",
+   // host: "http://127.0.0.1:3334/",
     user: null,
     height: 1260,
     width:500,
@@ -28,6 +28,13 @@ const store = new Vuex.Store({
     isloginadmin: true,
   },
   getters: {
+    getHost(state){
+      return state.host;
+    },
+    getMapHost(state){
+      return state.host+"map/";
+    },
+
     getUser(state) {
       return state.user;
     },
@@ -54,12 +61,30 @@ const store = new Vuex.Store({
     setUser(state, user) {
       state.user = user;
     },
+    /**
+     * post 多个文件
+     * @param state
+     * @param custom
+     */
+    postFiles(state,custom){
+      let headers = {
+        'Content-Type': 'multipart/form-data'
+      };
+      axios.post(custom.url, custom.formData, {headers: headers})
+        .then(res=>{
+          custom.callback(res.data);
+        });
+    },
     postCustom(state, custom) {
       let url = state.host + custom.url;
       let po = custom.po;
       let callback = custom.callback;
       let myFormDatas = new FormData();
-      myFormDatas.append('po', JSON.stringify(po));
+      let mark = 'po';
+      if(custom.mark){
+        mark = custom.mark;
+      }
+      myFormDatas.append(mark, JSON.stringify(po));
       axios({
         url: url,
         method: "POST",
@@ -69,6 +94,21 @@ const store = new Vuex.Store({
           callback(res.data);
         })
     },
+    postFormDataCustom(state, custom) {
+      let url = state.host + custom.url;
+      let callback = custom.callback;
+      let myFormDatas = custom.formdata;
+      axios({
+        url: url,
+        method: "POST",
+        data: myFormDatas,
+      })
+        .then(res => {
+          callback(res.data);
+        })
+    },
+
+
     getCustom(state, custom) {
       let url = state.host + custom.url;
       let callback = custom.callback;

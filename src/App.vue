@@ -13,10 +13,9 @@
     },
     created() {
       this.$store.commit("setSelf", this);
-    },
-    created() {
       this.setHeight();
     },
+
     watch: {
       $route(to, from) {
         this.setHeight();
