@@ -9,13 +9,14 @@ module.exports = {
 
     // Paths
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    //assetsPublicPath: '/',
+    assetsPublicPath: './',//springboot使用
     proxyTable: {},
 
     // Various Dev Server settings
     //host: '0.0.0.0', // can be overwritten by process.env.HOST
     host: 'localhost',
-    port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+    port: 8081, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
     notifyOnErrors: true,
@@ -44,8 +45,8 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
-
+    //assetsPublicPath: '/',
+    assetsPublicPath: './',//springboot 使用
     /**
      * Source Maps
      */
@@ -67,4 +68,4 @@ module.exports = {
     // Set to `true` or `false` to always turn it on or off
     bundleAnalyzerReport: process.env.npm_config_report
   }
-}
+};

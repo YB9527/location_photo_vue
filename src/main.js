@@ -18,14 +18,16 @@ import Vuex from 'vuex'
 Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {
-    host: "http://prsmartoa.com:3334/",
-   // host: "http://127.0.0.1:3334/",
+    //host: "http://prsmartoa.com:3334/",
+    //host: "http://127.0.0.1:3333/springboot/",
+    //host: "http://127.0.0.1:3333/",
+    host:"http://prsmartoa.com:10529/springboot/",
     user: null,
     height: 1260,
     width:500,
     self: '',
     //是否登录后台
-    isloginadmin: true,
+    isloginadmin: false,
   },
   getters: {
     getHost(state){

@@ -13,12 +13,13 @@ import olmap from '@/components/test/olmap'
 Vue.use(Router)
 
 export default new Router({
+  base: '/vue/',
   routes: [
-    {
+    /*{
       path: '/',
       name: 'olmap',
       component: olmap,
-    },
+    },*/
     {
 
       path: '/admin',

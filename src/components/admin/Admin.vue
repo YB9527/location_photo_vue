@@ -6,7 +6,7 @@
           <el-input v-model="password" show-password></el-input>
         </el-form-item>
         <el-form-item style="margin-top: 50px">
-          <el-button type="info" @click="onSubmit">立即创建</el-button>
+          <el-button type="info" @click="onSubmit">登录</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -115,9 +115,23 @@
           this.$store.commit("notify", {type: "error", message: "密码为空，请填写再登录", title: "登录提示"});
           return;
         }
-        this.$store.commit("postCustom",
+       /* this.$store.commit("getCustom", {
+          url: "xzdm/findall", callback: res => {
+
+          }
+        });*/
+
+       /* this.$store.commit("postCustom",
           {
             url: admintool.getAdminUrl() + "login",
+            po: {mark: "admin", password: this.password},
+            callback: (resultdata) => {
+
+            }
+          });*/
+        this.$store.commit("postCustom",
+          {
+            url:"admin/login",
             po: {mark: "admin", password: this.password},
             callback: (resultdata) => {
               if (resultdata.status == "Error") {
