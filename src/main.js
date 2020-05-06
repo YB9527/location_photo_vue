@@ -20,8 +20,8 @@ const store = new Vuex.Store({
   state: {
     //host: "http://prsmartoa.com:3334/",
     //host: "http://127.0.0.1:3333/springboot/",
-    //host: "http://127.0.0.1:3333/",
-    host:"http://prsmartoa.com:10529/springboot/",
+    host: "http://127.0.0.1:3333/",
+    //host:"http://prsmartoa.com:10529/springboot/",
     user: null,
     height: 1260,
     width:500,
@@ -134,7 +134,7 @@ const store = new Vuex.Store({
       ElementUI.Message({
         showClose: true,
         message: messagecustom.message,
-        type: messagecustom.type,
+        type: messagecustom.type.toLowerCase(),
         duration: 2000,
       });
     },
@@ -142,7 +142,7 @@ const store = new Vuex.Store({
       ElementUI.Notification({
         title: custom.title,
         message: custom.message,
-        type: custom.type,
+        type: custom.type.toLowerCase(),
         duration: 2000,
       });
     },

@@ -23,7 +23,11 @@
             <i class="el-icon-user"></i>
             <span slot="title">用户管理</span>
           </el-menu-item>
-          <el-submenu index="2">
+          <el-menu-item index="2" @click="toPath('/admin/projectmanager')">
+            <i class="el-icon-ice-cream-round"></i>
+            <span slot="title">项目管理</span>
+          </el-menu-item>
+          <el-submenu index="3">
             <template slot="title">
               <i class="el-icon-location"></i>
               <span slot="title">地图</span>

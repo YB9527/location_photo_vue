@@ -7,10 +7,10 @@ import MapDatabaseManager from '@/components/admin/MapDatabaseManager'
 import MapServerManager from '@/components/admin/MapServerManager'
 import AreaSelect from '@/components/admin/AreaSelect'
 import XZQYManager from '@/components/admin/XZQYManager'
-
+import ProjectManager from '@/components/admin/ProjectManager'
 import olmap from '@/components/test/olmap'
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   base: '/vue/',
@@ -50,6 +50,11 @@ export default new Router({
           path: 'xzqymanager',
           name: 'XZQYManager',
           component: XZQYManager,
+        },
+        {
+          path: 'projectmanager',
+          name: 'ProjectManager',
+          component: ProjectManager,
         },
       ]
     },
