@@ -27,7 +27,7 @@ const store = new Vuex.Store({
     width:500,
     self: '',
     //是否登录后台
-    isloginadmin: false,
+    isloginadmin: true,
   },
   getters: {
     getHost(state){

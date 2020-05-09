@@ -6,7 +6,7 @@ import UserManager from '@/components/admin/UserManager'
 import MapDatabaseManager from '@/components/admin/MapDatabaseManager'
 import MapServerManager from '@/components/admin/MapServerManager'
 import AreaSelect from '@/components/admin/AreaSelect'
-import XZQYManager from '@/components/admin/XZQYManager'
+import XZQYManager from '@/components/admin/project/XZQYManager'
 import ProjectManager from '@/components/admin/ProjectManager'
 import olmap from '@/components/test/olmap'
 

@@ -1,12 +1,13 @@
 <template>
   <div>
-    <h2>行政区域管理</h2>
+    <h2>行政区域任务分配</h2>
+
     <div style="float: left;margin-bottom: 3px">选择行政代码表格： <input id="upload_file" type="file" @change="submitUpload"
-                                                                 v-if="fileshow"/>
+                                          v-if="fileshow"/>
       <el-button @click="deleteXZDMs(xzdms)" plain>清空没有关联数据</el-button>
     </div>
     <div style="clear: both"></div>
-    <el-table :data="xzdms" :height="tableheight" border style="width: 800px;text-align: center">
+    <el-table :data="xzdms" :height="tableheight" border style="text-align: center">
       <el-table-column type="index" label="序号" width="60px">
         <template slot-scope="scope">
           {{scope.$index +1}}
@@ -14,14 +15,16 @@
       </el-table-column>
       <el-table-column property="DJZQDM" label="地籍子区代码" width="300px"></el-table-column>
       <el-table-column property="DJZQMC" label="地籍子区名称" width="400px"></el-table-column>
-
-
+      <el-table-column property="DJZQMC" label="地块数量" ></el-table-column>
+      <el-table-column property="DJZQMC" label="地块数量" ></el-table-column>
+      <el-table-column property="DJZQMC" label="已完成数量" ></el-table-column>
+      <el-table-column property="DJZQMC" label="未完成数量" ></el-table-column>
+      <el-table-column property="DJZQMC" label="任务发放时间" ></el-table-column>
+      <el-table-column property="DJZQMC" label="任务完成时间" ></el-table-column>
+      <el-table-column property="DJZQMC" label="执行者" ></el-table-column>
+      <el-table-column property="DJZQMC" label="执行者工作区域数量" ></el-table-column>
     </el-table>
-    <div style="text-align: left;">
-      <Pageination :searchcustom="searchproject"></Pageination>
-    </div>
-
-
+    <div style="float: left"><span>总行政区域：50</span>&nbsp;&nbsp;&nbsp;&nbsp;<span> 已分配/未分配 : 20/30</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>已完成/未完成：5/45</span></div>
     <el-dialog title="行政区域数据预览" :visible.sync="dialogTableVisible" width="850px">
       <el-table :data="writexzdms" height="300" border>
         <el-table-column type="index" label="序号" width="60px">
@@ -44,7 +47,7 @@
 
 <script>
   import XLSX from 'xlsx';
-  import Pageination from "../common/Pageination";
+  import Pageination from "../../common/Pageination";
 
   export default {
     name: "XZQYManager",
@@ -72,7 +75,7 @@
       this.tableheight = 500;
     },
     created() {
-      this.tableheight = this.$store.getters.getWindowHeight - 150;
+      this.tableheight = this.$store.getters.getWindowHeight - 140;
       this.init();
     },
     methods: {

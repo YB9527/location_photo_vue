@@ -40,10 +40,10 @@
               <i class="el-icon-wind-power"></i>
               <span slot="title">服务管理</span>
             </el-menu-item>
-            <el-menu-item @click="toPath('/admin/xzqymanager')">
+           <!-- <el-menu-item @click="toPath('/admin/xzqymanager')">
               <i class="el-icon-ship"></i>
               <span slot="title">行政区域管理</span>
-            </el-menu-item>
+            </el-menu-item>-->
           </el-submenu>
           <el-menu-item index="3" style="margin-top: 100px" @click="closeOrOpenMenu()">
             <i :class="colseoropenmenu"></i>
