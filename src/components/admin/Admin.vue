@@ -155,7 +155,7 @@
         console.log(key, keyPath);
       },
       toPath(path) {
-        console.log(path)
+        //console.log(path)
         if (this.$route.path != path) {
           this.$router.push({path: path});
         }

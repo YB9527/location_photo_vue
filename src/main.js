@@ -24,17 +24,17 @@ const store = new Vuex.Store({
     //host:"http://prsmartoa.com:10529/springboot/",
     user: null,
     height: 1260,
-    width:500,
+    width: 500,
     self: '',
     //是否登录后台
     isloginadmin: true,
   },
   getters: {
-    getHost(state){
+    getHost(state) {
       return state.host;
     },
-    getMapHost(state){
-      return state.host+"map/";
+    getMapHost(state) {
+      return state.host + "map/";
     },
 
     getUser(state) {
@@ -64,90 +64,131 @@ const store = new Vuex.Store({
       state.user = user;
     },
     /**
-     * post 多个文件
-     * @param state
-     * @param custom
+     *
+     * @param arr
+     * @param method 要排序的字段
      */
-    postFiles(state,custom){
-      let headers = {
-        'Content-Type': 'multipart/form-data'
-      };
-      axios.post(custom.url, custom.formData, {headers: headers})
-        .then(res=>{
-          custom.callback(res.data);
-        });
-    },
-    postCustom(state, custom) {
-      let url = state.host + custom.url;
-      let po = custom.po;
-      let callback = custom.callback;
-      let myFormDatas = new FormData();
-      let mark = 'po';
-      if(custom.mark){
-        mark = custom.mark;
+
+    /**
+     *
+     * @param arr要排序的数字
+     * @param custom {method:"字段名",order:0 从小到大 | 1 从大到小 }
+     */
+    arrayOrder(state, custom) {
+      let arr = custom.arr;
+      if(!arr){
+        return ;
       }
-      myFormDatas.append(mark, JSON.stringify(po));
-      axios({
-        url: url,
-        method: "POST",
-        data: myFormDatas,
-      })
-        .then(res => {
-          callback(res.data);
-        })
-    },
-    postFormDataCustom(state, custom) {
-      let url = state.host + custom.url;
-      let callback = custom.callback;
-      let myFormDatas = custom.formdata;
-      axios({
-        url: url,
-        method: "POST",
-        data: myFormDatas,
-      })
-        .then(res => {
-          callback(res.data);
-        })
-    },
+      let method = custom.method;
+      let order = custom.order;
+      for (let i = 0; i < arr.length - 1; i++) {
+        for (let j = 0; j < arr.length - i - 1; j++) {
+          if (order === 0) {
+            if (arr[j][method] > arr[j + 1][method]) {
+              let temp = arr[j];
+              arr[j] = arr[j + 1];
+              arr[j + 1] = temp;
+            }
+          }else{
+            if (arr[j][method] < arr[j + 1][method]) {
+              let temp = arr[j];
+              arr[j] = arr[j + 1];
+              arr[j + 1] = temp;
+            }
+        }
+      }
+    }
 
 
-    getCustom(state, custom) {
-      let url = state.host + custom.url;
-      let callback = custom.callback;
-      axios.get(url)
-        .then(res => {
-          callback(res.data);
-        });
-    },
-    confirm(state, callbackpo) {
-      state.self.$confirm(callbackpo.message, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        callbackpo.callback(true);
-      }).catch(() => {
-        callbackpo.callback(false);
+
+  },
+
+  /**
+   * post 多个文件
+   * @param state
+   * @param custom
+   */
+  postFiles(state, custom) {
+    let headers = {
+      'Content-Type': 'multipart/form-data'
+    };
+    axios.post(custom.url, custom.formData, {headers: headers})
+      .then(res => {
+        custom.callback(res.data);
       });
-    },
-    showMessageBox(state, messagecustom) {
-      ElementUI.Message({
-        showClose: true,
-        message: messagecustom.message,
-        type: messagecustom.type.toLowerCase(),
-        duration: 2000,
+  },
+  postCustom(state, custom) {
+    let url = state.host + custom.url;
+    let po = custom.po;
+    let callback = custom.callback;
+    let myFormDatas = new FormData();
+    let mark = 'po';
+    if (custom.mark) {
+      mark = custom.mark;
+    }
+    myFormDatas.append(mark, JSON.stringify(po));
+    axios({
+      url: url,
+      method: "POST",
+      data: myFormDatas,
+    })
+      .then(res => {
+        callback(res.data);
+      })
+  },
+  postFormDataCustom(state, custom) {
+    let url = state.host + custom.url;
+    let callback = custom.callback;
+    let myFormDatas = custom.formdata;
+    axios({
+      url: url,
+      method: "POST",
+      data: myFormDatas,
+    })
+      .then(res => {
+        callback(res.data);
+      })
+  },
+
+
+  getCustom(state, custom) {
+    let url = state.host + custom.url;
+    let callback = custom.callback;
+    axios.get(url)
+      .then(res => {
+        callback(res.data);
       });
-    },
-    notify(state, custom) {
-      ElementUI.Notification({
-        title: custom.title,
-        message: custom.message,
-        type: custom.type.toLowerCase(),
-        duration: 2000,
-      });
-    },
-  }
-});
+  },
+  confirm(state, callbackpo) {
+    state.self.$confirm(callbackpo.message, '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }).then(() => {
+      callbackpo.callback(true);
+    }).catch(() => {
+      callbackpo.callback(false);
+    });
+  },
+  showMessageBox(state, messagecustom) {
+    ElementUI.Message({
+      showClose: true,
+      message: messagecustom.message,
+      type: messagecustom.type.toLowerCase(),
+      duration: 2000,
+    });
+  },
+  notify(state, custom) {
+    ElementUI.Notification({
+      title: custom.title,
+      message: custom.message,
+      type: custom.type.toLowerCase(),
+      duration: 2000,
+    });
+  },
+}
+})
+;
 
 Vue.filter('dateFormat', (value) => {
   if (!value) {

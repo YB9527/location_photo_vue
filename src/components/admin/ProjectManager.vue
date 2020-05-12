@@ -42,7 +42,7 @@
             width="150">
           </el-table-column>
           <el-table-column
-            prop="notes"
+            prop="xzdms.length"
             label="行政区总数量"
           >
           </el-table-column>
@@ -62,7 +62,7 @@
             <template slot-scope="scope">
               <el-button type="warning" size="mini" @click="deleteProject(scope.$index, scope.row)" plain>删除</el-button>
               <el-button type="info" size="mini" @click="showDiloagEditProject(scope.row)" plain>编辑</el-button>
-              <el-button type="info" size="mini" @click="addProjectUser(scope.row)" plain>添加人员</el-button>
+              <el-button type="info" size="mini" @click="addProjectUser(scope.row)" plain>预选人员</el-button>
               <el-button type="info" size="mini" @click="showDialoagDispatchTask(scope.row)" plain>任务分配</el-button>
             </template>
           </el-table-column>
@@ -76,12 +76,12 @@
       </div>
     </div>
 
-    <div v-show="!showprojectmanager" >
+    <div v-if="!showprojectmanager" >
 
-      <el-button type="info"  style="float: left;margin-left: 10px" size="mini" @click="backProjectManager"
+  <!--    <el-button type="info"  style="float: left;margin-left: 10px" size="mini" @click="backProjectManager"
                  plain>返回
-      </el-button>
-      <XZQYManager></XZQYManager>
+      </el-button>-->
+      <XZQYManager @backProjectManager="backProjectManager" :project="newproject"></XZQYManager>
 
     </div>
 
@@ -220,14 +220,25 @@
           }
         });
       },
-      backProjectManager() {
+      backProjectManager(newproject) {
+        //console.log(11,this.newproject);
+        for (let i = 0; i < this.projects.length; i++) {
+          let project = this.projects[i];
+          if(project.id ==  this.newproject.id){
+            this.projects.splice(i, 1, this.newproject);
+            break;
+          }
+        }
         this.showprojectmanager = true;
+
       },
       /**
        * 弹出方法任务的窗口
        * @param project
        */
       showDialoagDispatchTask(project) {
+        this.newproject =JSON.parse(JSON.stringify(project));
+        //console.log(998,this.newproject);
         this.showprojectmanager = false;
         //this.dispatchTaskDialogVisible = true;
       },
@@ -235,6 +246,7 @@
        * 找出所有的工作人员，如果users 中有内容，就直接返回 users，不再请求后台
        * @param callback
        */
+
       findUserAll(callback) {
         if (this.users && this.users.length > 0) {
           callback(this.users);
