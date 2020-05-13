@@ -7,6 +7,8 @@ import MapDatabaseManager from '@/components/admin/MapDatabaseManager'
 import MapServerManager from '@/components/admin/MapServerManager'
 import AreaSelect from '@/components/admin/AreaSelect'
 import XZQYManager from '@/components/admin/project/XZQYManager'
+import DispatchTaskXZDM from '@/components/admin/project/DispatchTaskXZDM'
+import DispatchTaskZJD from '@/components/admin/project/DispatchTaskZJD'
 import ProjectManager from '@/components/admin/ProjectManager'
 import olmap from '@/components/test/olmap'
 
@@ -50,6 +52,18 @@ export default new Router({
           path: 'xzqymanager',
           name: 'XZQYManager',
           component: XZQYManager,
+          /*children: [
+            {
+              path: 'dispatchtaskxzdm',
+              name: 'DispatchTaskXZDM',
+              component: DispatchTaskXZDM,
+            },
+            {
+              path: 'dispatchtaskzjd',
+              name: 'DispatchTaskZJD',
+              component: DispatchTaskZJD,
+            },
+          ]*/
         },
         {
           path: 'projectmanager',
