@@ -17,10 +17,16 @@
           {{scope.row.task | taskStatusFormat }}
         </template>
       </el-table-column>
-      <el-table-column property="task" label="任务完成时间"></el-table-column>
+      <el-table-column  label="任务完成时间">
+        <template slot-scope="scope">
+          {{scope.row.task | taskFinishDateFormat }}
+        </template>
+
+      </el-table-column>
       <el-table-column label="当前工作者">
         <template slot-scope="scope">
-          {{scope.row.user?scope.row.user.nikeName:""}}
+      <!--    {{scope.row.task?scope.row.task.user.nikeName:""}}-->
+          {{scope.row.task?scope.row.task.user.nickName:""}}
         </template>
       </el-table-column>
       <el-table-column
@@ -74,15 +80,19 @@
 <script>
   export default {
     name: "DispatchTaskZJD",
-    props: ['xzdm','users'],
+    props: ['currentxzdm','users'],
     data() {
       return {
+        xzdm:{},
         tableheight: 0,
         multipleSelection: [],
         showAddZJDUserDialog: false,//弹出行政区域添加人员窗口
       }
     },
     filters: {
+      taskFinishDateFormat(task){
+        console.log(task);
+      },
       taskStatusFormat(task) {
         if(!task){
           return "未开始";
@@ -91,10 +101,8 @@
           case 0:
             return "完成";
           case  1:
-            return "未开始";
-          case 2:
             return "进行中";
-          case 3:
+          case 2:
             return "异常";
           default:
             break;
@@ -106,9 +114,19 @@
     },
     created() {
       this.tableheight = this.$store.getters.getWindowHeight - 140;
-      console.log(this.xzdm)
+      this.xzdm =JSON.parse(JSON.stringify(this.currentxzdm))  ;
+      this.init(this.xzdm);
     },
     methods: {
+      init(xzdm){
+        this.xzdm.zjds = [];
+        this.$store.commit("getCustom",{
+          url:"zjd/findbyxzdmid?xzdmid="+xzdm.id,
+          callback:resultData=>{
+            this.xzdm.zjds = JSON.parse(resultData.json);
+          }
+        });
+      },
       openAddZJDUserDialog(){
          this.showAddZJDUserDialog= true;
       },
@@ -133,6 +151,8 @@
                   if (resultData.status === "Success") {
                     this.$store.commit("notify", {type: resultData.status.toLowerCase(), message: "任务分配成功"});
                     this.showAddZJDUserDialog = false;
+                    //跟新本组的宅基地
+                    this.init(this.xzdm);
                   } else {
                     this.$store.commit("showMessageBox", {
                       type: resultData.status.toLowerCase(),

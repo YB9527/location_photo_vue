@@ -1,27 +1,40 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
+import HelloWorld from '@/components/user/HelloWorld'
 import Admin from '@/components/admin/Admin'
 import UserManager from '@/components/admin/UserManager'
 import MapDatabaseManager from '@/components/admin/MapDatabaseManager'
 import MapServerManager from '@/components/admin/MapServerManager'
 import AreaSelect from '@/components/admin/AreaSelect'
 import XZQYManager from '@/components/admin/project/XZQYManager'
-import DispatchTaskXZDM from '@/components/admin/project/DispatchTaskXZDM'
+import MediaManager from '@/components/admin/project/MediaManager'
 import DispatchTaskZJD from '@/components/admin/project/DispatchTaskZJD'
 import ProjectManager from '@/components/admin/ProjectManager'
-import olmap from '@/components/test/olmap'
+import User from '@/components/user/User'
+import  olmap from '@/components/test/olmap'
 
 Vue.use(Router);
 
 export default new Router({
-  base: '/vue/',
+  //base: '/vue/',
   routes: [
-    /*{
-      path: '/',
-      name: 'olmap',
-      component: olmap,
-    },*/
+    {
+      path: '/user',
+      name: 'User',
+      component: User,
+      children: [
+        {
+          path: 'helloworld',
+          name: 'HelloWorld',
+          component: HelloWorld,
+        },
+        {
+          path: 'olmap',
+          name: 'olmap',
+          component: olmap,
+        },
+      ]
+    },
     {
 
       path: '/admin',
@@ -52,24 +65,35 @@ export default new Router({
           path: 'xzqymanager',
           name: 'XZQYManager',
           component: XZQYManager,
-          /*children: [
-            {
-              path: 'dispatchtaskxzdm',
-              name: 'DispatchTaskXZDM',
-              component: DispatchTaskXZDM,
-            },
-            {
-              path: 'dispatchtaskzjd',
-              name: 'DispatchTaskZJD',
-              component: DispatchTaskZJD,
-            },
-          ]*/
+
         },
         {
           path: 'projectmanager',
           name: 'ProjectManager',
           component: ProjectManager,
+
         },
+        /*{
+          path: 'project',
+          name: 'Project',
+          component: Project,
+          children: [
+            {
+
+              path: 'xzqymanager',
+              name: 'XZQYManager',
+              component: XZQYManager,
+
+
+            },
+            {
+              path: 'mediaManager',
+              name: 'MediaManager',
+              component: MediaManager,
+            },
+          ]
+
+        }*/
       ]
     },
     {

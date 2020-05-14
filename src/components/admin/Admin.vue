@@ -60,7 +60,7 @@
 
 <script>
   import admintool from '@/public/admin/admintool';
-
+  import  axios from 'axios'
   export default {
     name: "Admin",
     data() {
@@ -80,7 +80,7 @@
       },
     },
     mounted() {
-
+    
 
     },
     created() {
@@ -92,8 +92,6 @@
       if (!this.show && this.$route.path !== "/admin") {
         this.$router.push({path: '/admin'})
       }
-
-
     },
     methods: {
       setMainWidth(ismax) {

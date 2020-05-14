@@ -11,6 +11,7 @@
         </el-tooltip>
 
       </div>
+      <!--项目表格-->
       <div>
         <el-table
           :data="projects"
@@ -29,12 +30,20 @@
           <el-table-column
             prop="name"
             label="项目名字"
-            width="300">
+            width="200">
           </el-table-column>
           <el-table-column
             prop="projectType"
             label="项目类型"
             width="150">
+          </el-table-column>
+          <el-table-column
+            prop="projectType"
+            label="涉及人数"
+            width="100">
+            <template slot-scope="scope">
+              {{scope.row.users ? scope.row.users.length:0}}
+            </template>
           </el-table-column>
           <el-table-column
             prop="djzqdm"
@@ -57,13 +66,15 @@
           >
           </el-table-column>
           <el-table-column
-            label="操作" width="360"
+            label="操作" width="300"
           >
             <template slot-scope="scope">
-              <el-button type="warning" size="mini" @click="deleteProject(scope.$index, scope.row)" plain>删除</el-button>
-              <el-button type="info" size="mini" @click="showDiloagEditProject(scope.row)" plain>编辑</el-button>
-              <el-button type="info" size="mini" @click="addProjectUser(scope.row)" plain>预选人员</el-button>
-              <el-button type="info" size="mini" @click="showDialoagDispatchTask(scope.row)" plain>任务分配</el-button>
+              <el-button-group>
+                <el-button type="warning" size="small" @click="deleteProject(scope.$index, scope.row)" plain>删除</el-button>
+                <el-button type="info" size="small" @click="showDiloagEditProject(scope.row)" plain>编辑</el-button>
+                <el-button type="info" size="small" @click="addProjectUser(scope.row)" plain>预选人员</el-button>
+                <el-button type="info" size="small" @click="showDialoagDispatchTask(scope.row)" plain>详情</el-button>
+              </el-button-group>
             </template>
           </el-table-column>
 
@@ -76,12 +87,12 @@
       </div>
     </div>
 
-    <div v-if="!showprojectmanager" >
+    <div v-if="!showprojectmanager">
 
-  <!--    <el-button type="info"  style="float: left;margin-left: 10px" size="mini" @click="backProjectManager"
-                 plain>返回
-      </el-button>-->
-      <XZQYManager @backProjectManager="backProjectManager" :project="newproject"></XZQYManager>
+      <!--    <el-button type="info"  style="float: left;margin-left: 10px" size="mini" @click="backProjectManager"
+                     plain>返回
+          </el-button>-->
+      <XZQYManager @backProjectManager="backProjectManager" :currentproject="newproject"></XZQYManager>
 
     </div>
 
@@ -153,7 +164,6 @@
       </el-dialog>
     </div>
 
-
   </div>
 </template>
 
@@ -224,7 +234,7 @@
         //console.log(11,this.newproject);
         for (let i = 0; i < this.projects.length; i++) {
           let project = this.projects[i];
-          if(project.id ==  this.newproject.id){
+          if (project.id == this.newproject.id) {
             this.projects.splice(i, 1, this.newproject);
             break;
           }
@@ -237,7 +247,7 @@
        * @param project
        */
       showDialoagDispatchTask(project) {
-        this.newproject =JSON.parse(JSON.stringify(project));
+        this.newproject = JSON.parse(JSON.stringify(project));
         //console.log(998,this.newproject);
         this.showprojectmanager = false;
         //this.dispatchTaskDialogVisible = true;

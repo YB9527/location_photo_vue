@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <h3 style="margin: 0px">“{{project.name}}” 项目任务区域分配 </h3>
+    <h3 style="margin: 0px">“{{project.name}}” 项目 {{title}} </h3>
     <el-menu
       :default-active="defaultactiveIndex"
       class="el-menu-demo"
@@ -24,60 +24,74 @@
       </el-submenu>
       <el-submenu index="3" :disabled="project.xzdms && project.xzdms.length >0?false:true">
         <template slot="title">任务分配</template>
-        <el-menu-item index="3-1"  @click="toDispatchTaskXZDM"> 1、区域分配任务</el-menu-item>
+        <el-menu-item index="3-1" @click="toDispatchTaskXZDM"> 1、区域分配任务</el-menu-item>
         <el-menu-item index="3-2" @click="toDispatchTaskZJD">2、单个地块任务</el-menu-item>
       </el-submenu>
-      <el-menu-item index="4" @click="deleteXZDMs(project.xzdms)">清空没有关联区域</el-menu-item>
+
+      <el-menu-item index="4" @click="toMediaManagerRouter"
+      >多媒体数据定义
+      </el-menu-item>
       <el-menu-item index="5" :disabled="multipleSelection.length === 0 " style="float: right"
-                    v-show="showtable"
+                    v-show="showtable && showproject"
                     @click="openAddXZDMUserDialog">分配工作人员
       </el-menu-item>
-      <el-menu-item index="6"  style="float: right"
-                    v-show="!showxzdmtable && !showxzdmtable"
+      <el-menu-item index="6" style="float: right"
+                    v-show="!showxzdmtable && !showxzdmtable && showproject"
                     @click="openAddZJDUserDialog">地块分配工作人员
       </el-menu-item>
+
+      <el-menu-item index="7" @click="deleteXZDMs(project.xzdms)">清空没有关联区域</el-menu-item>
     </el-menu>
-    <el-table v-if="showxzdmtable" :data="project.xzdms" :height="tableheight" border style="text-align: center"
-              @selection-change="handleSelectionChange">
-      <el-table-column v-show="false" type="index" label="序号" width="60px">
-        <template slot-scope="scope">
-          {{scope.$index +1}}
-        </template>
-      </el-table-column>
-      <el-table-column property="DJZQDM" label="地籍子区代码" width="200px">
-      </el-table-column>
-      <el-table-column property="DJZQMC" label="地籍子区名称" width="300px"></el-table-column>
-      <el-table-column label="地块数量" width="100px">
-        <template slot-scope="scope">
-          <span>{{scope.row.zjds ? (scope.row.zjds.length === 0?"":scope.row.zjds.length) :""}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column property="DJZQMC" label="已完成数量"></el-table-column>
-      <el-table-column property="DJZQMC" label="未完成数量"></el-table-column>
+    <div v-show="showproject">
+      <el-table v-if="showxzdmtable" :data="currentproject.xzdms" :height="tableheight" border
+                style="text-align: center"
+                @selection-change="handleSelectionChange">
+        <el-table-column v-show="false" type="index" label="序号" width="60px">
+          <template slot-scope="scope">
+            {{scope.$index +1}}
+          </template>
+        </el-table-column>
+        <el-table-column property="DJZQDM" label="地籍子区代码" width="200px">
+        </el-table-column>
+        <el-table-column property="DJZQMC" label="地籍子区名称" width="300px"></el-table-column>
+        <el-table-column label="地块数量" width="100px">
+          <template slot-scope="scope">
+            <span>{{scope.row.zjds ? (scope.row.zjds.length === 0?"":scope.row.zjds.length) :""}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column property="DJZQMC" label="已完成数量"></el-table-column>
+        <el-table-column property="DJZQMC" label="未完成数量"></el-table-column>
 
-      <el-table-column
-        type="selection"
-        v-if="showtable"
-        width="55">
-      </el-table-column>
-      <el-table-column
-        label="操作" width="200"
-      >
-        <template slot-scope="scope">
-          <el-button   v-show="showzjdtaskbtu &&scope.row.zjds && scope.row.zjds.length >0 " type="warning" size="mini"   @click="showZJDTable(scope.$index,scope.row)" plain
-          >以地块分配</el-button>
-        </template>
+        <el-table-column
+          type="selection"
+          v-if="showtable"
+          width="55">
+        </el-table-column>
+        <el-table-column
+          label="操作" width="200"
+        >
+          <template slot-scope="scope">
+            <el-button v-show="showzjdtaskbtu &&scope.row.zjds && scope.row.zjds.length >0 " type="warning" size="mini"
+                       @click="showZJDTable(scope.$index,scope.row)" plain
+            >以地块分配
+            </el-button>
+          </template>
 
-      </el-table-column>
-    </el-table>
+        </el-table-column>
+      </el-table>
 
-    <div style="clear: both"></div>
-    <div v-if="!showxzdmtable"> <DispatchTaskZJD  ref="dispatchTaskZJD" :xzdm="currentxzdm" :users="project.users"></DispatchTaskZJD></div>
-    <!--按照行政区分配任务-->
-    <div style="float: left" >
-      <span>总行政区域：{{project.xzdms ? project.xzdms.length:0}}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span> 已分配/未分配 : 20/30</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>已完成/未完成：5/45</span>
+      <div style="clear: both"></div>
+      <div v-if="!showxzdmtable">
+        <DispatchTaskZJD ref="dispatchTaskZJD" :currentxzdm="currentxzdm" :users="project.users"></DispatchTaskZJD>
+      </div>
+      <!--按照行政区分配任务-->
+      <div style="float: left">
+        <span>总行政区域：{{project.xzdms ? project.xzdms.length:0}}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span> 已分配/未分配 : 20/30</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>已完成/未完成：5/45</span>
+      </div>
     </div>
-
+    <div v-if="!showproject">
+      <MediaManager :currentproject="project"></MediaManager>
+    </div>
     <!--分页脚本-->
     <el-dialog title="行政区域数据预览" :visible.sync="dialogTableVisible" width="850px">
       <el-table :data="writexzdms" height="300" border>
@@ -151,6 +165,7 @@
                v-show="importshow">导 入</el-button>
      </span>
     </el-dialog>
+
   </div>
 
 
@@ -158,20 +173,23 @@
 
 <script>
   import XLSX from 'xlsx';
-  import DispatchTaskXZDM from "./DispatchTaskXZDM";
   import DispatchTaskZJD from "./DispatchTaskZJD";
   import Pageination from "../../common/Pageination";
+  import MediaManager from './MediaManager';
 
   export default {
     name: "XZQYManager",
-    props: ['project'],
-    components: {Pageination,DispatchTaskXZDM,DispatchTaskZJD},
+    props: ['currentproject'],
+    components: {Pageination, DispatchTaskZJD, MediaManager},
     data() {
       return {
-        showxzdmtable:true,//行政代码窗口显示
+        project: {},//当前操作的项目
+        title: "",
+        showxzdmtable: true,//行政代码窗口显示
+        showproject: true,//如果是projectmanager 路由，那么是true 显示
         showtable: false,
-        showzjdtaskbtu:false,
-        currentxzdm:{},//以地块为分配的
+        showzjdtaskbtu: false,
+        currentxzdm: {},//以地块为分配的
         activeIndex: "",
         defaultactiveIndex: "",
         writezjdsDialogTableVisible: false,
@@ -194,41 +212,61 @@
       };
     },
     watch: {
+      $route(to, from) {
+
+      },
+      activeIndex(to, from) {
+
+
+        if (to === "4") {
+          this.showproject = false;
+          this.title = "多媒体";
+        } else {
+          this.showproject = true;
+          this.title = "任务区域分配";
+        }
+      }
 
     },
+
     mounted() {
       this.tableheight = 500;
     },
     created() {
       this.tableheight = this.$store.getters.getWindowHeight - 140;
-      this.showtable=true;
+      this.showtable = true;
+      this.project = this.currentproject;
       //this.$store.commit("arrayOrder",{arr:this.project.xzdms,order:0,method:"DJZQDM"});
       // console.log(111,this.project);
+      this.project.xzdms = [];
       this.init();
+
       //this.toDispatchTaskXZDM();
 
       //this.xzdms = this.project.xzdms;
     },
     methods: {
+      toMediaManagerRouter() {
 
-      openAddZJDUserDialog(){
+      },
+      openAddZJDUserDialog() {
         this.$refs.dispatchTaskZJD.openAddZJDUserDialog("嘿嘿嘿");
       },
-      showZJDTable(index,xzdm){
+      showZJDTable(index, xzdm) {
         this.currentxzdm = xzdm;
-        this.showxzdmtable =false;
+        this.showxzdmtable = false;
       },
-      toDispatchTaskXZDM(){
+      toDispatchTaskXZDM() {
         //this.$router.push({path: '/admin/xzqymanager/dispatchtaskxzdm'});
         //this.$router.push({name: "DispatchTaskXZDM"});
-        this.showtable =true;
-        this.showxzdmtable =true;
-        this.showzjdtaskbtu =false;
+        this.showtable = true;
+        this.showxzdmtable = true;
+        this.showzjdtaskbtu = false;
       },
-      toDispatchTaskZJD(){
-        this.showtable =false;
-        this.showxzdmtable =true;
-        this.showzjdtaskbtu =true;
+      toDispatchTaskZJD() {
+        this.showtable = false;
+        this.showxzdmtable = true;
+        this.showzjdtaskbtu = true;
       },
 
       /**
@@ -237,6 +275,9 @@
        * @param writezjds
        */
       saveWriteZJDs(writezjds) {
+        for (let tem of writezjds) {
+          tem.isUpload = true;
+        }
         let updateXZDMs = [];//发生改表了的行政区域
         //this.saveWriteZJDsLoading = true;
         let xzdms = JSON.parse(JSON.stringify(this.project.xzdms));
@@ -321,10 +362,10 @@
       ,
       backProjectManager() {
 
-        if(this.showxzdmtable){
+        if (this.showxzdmtable) {
           this.$emit('backProjectManager', this.project);
-        }else{
-          this.showxzdmtable =true;
+        } else {
+          this.showxzdmtable = true;
         }
 
       }
@@ -364,7 +405,7 @@
         this.activeIndex = key;
       },
 
-      findXZDMZJDAll(xzdms,callback) {
+      findXZDMZJDAll(xzdms, callback) {
         let xzdmids = [];
         this.showtable = false;
         this.zjdtableshow = false;
@@ -405,18 +446,28 @@
       init() {
         // let self = this;
         //console.log(4,this.project);
-        console.log(this.project)
+
         this.$store.commit("getCustom", {
           url: "/xzdm/findbyprojectid?projectid=" + this.project.id, callback: resultdata => {
 
             if (resultdata.status === "Success") {
-              this.project.xzdms = JSON.parse(resultdata.json);
+
+              if(this.project.xzdms){
+                this.project.xzdms.splice(0,this.project.xzdms.length);
+              }
+              let xzdmsTemp = JSON.parse(resultdata.json);
+
+              for(let xzdmTemp of xzdmsTemp){
+                this.project.xzdms.push(xzdmTemp);
+              }
               //this.showtable = true;
               //行政代码排序
               this.$store.commit("arrayOrder", {arr: this.project.xzdms, order: 0, method: "DJZQDM"});
-              this.findXZDMZJDAll(this.project.xzdms,xzdms=>{
+              //查找所有的宅基地
+              this.findXZDMZJDAll(this.project.xzdms, xzdms => {
                 this.dialogTableVisible = false;
               });
+
             } else {
               this.$store.commit("showMessageBox", {
                 type: resultdata.status.toLowerCase(),
@@ -557,6 +608,7 @@
        * @param writexzdms
        */
       saveWriteXZDMs(writexzdms) {
+
         this.importxzdmsloading = true;
         let self = this;
         this.$store.commit("postCustom", {
